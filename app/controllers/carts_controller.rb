@@ -1,7 +1,14 @@
 class CartsController < ApplicationController
 
   def show
+    if cart.empty?
+      flash.now[:notice] = "Your cart is empty."
+      render "empty"
+    else
+      @enhanced_cart = enhanced_cart
+    end
   end
+  
 
   def add_item
     product_id = params[:product_id].to_s
