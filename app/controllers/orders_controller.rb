@@ -1,16 +1,16 @@
 class OrdersController < ApplicationController
-
   def show
     @order = Order.find(params[:id])
   end
 
   def create
     charge = perform_stripe_charge
-    order  = create_order(charge)
+    order = create_order(charge)
 
     if order.valid?
       empty_cart!
-      redirect_to order, notice: 'Your Order has been placed.'
+      flash[:success] = "Your order has been placed successfully. Your order ID is #{order.id}."
+      redirect_to order_path(order)
     else
       redirect_to cart_path, flash: { error: order.errors.full_messages.first }
     end
@@ -19,7 +19,12 @@ class OrdersController < ApplicationController
     redirect_to cart_path, flash: { error: e.message }
   end
 
+
   private
+
+  def cart_subtotal
+    enhanced_cart.sum { |entry| entry[:product].price * entry[:quantity] }
+  end
 
   def empty_cart!
     # empty hash means no products in cart :)
@@ -39,7 +44,7 @@ class OrdersController < ApplicationController
     order = Order.new(
       email: params[:stripeEmail],
       total_cents: (cart_subtotal * 100).to_i,
-      stripe_charge_id: stripe_charge.id, # returned by stripe
+      stripe_charge_id: stripe_charge.id # returned by stripe
     )
 
     enhanced_cart.each do |entry|
@@ -52,8 +57,7 @@ class OrdersController < ApplicationController
         total_price: product.price * quantity
       )
     end
-    order.save!
+    order.save
     order
   end
-
 end

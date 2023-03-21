@@ -1,0 +1,11 @@
+<tr>
+  <td>
+    <%= line_item.product.name %>
+    <p><%= line_item.product.description %></p>
+    <%= image_tag line_item.product.image_url, width: 200, height: 160 %>
+  </td>
+  <td><%= line_item.quantity %></td>
+  <td><%= number_to_currency(line_item.item_price) %></td>
+  <td><%= number_to_currency(line_item.total_price) %></td>
+</tr>
+
