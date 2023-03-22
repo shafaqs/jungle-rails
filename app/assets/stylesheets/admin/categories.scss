@@ -1,0 +1,23 @@
+// Place all the styles related to the admin/categories controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #ddd;
+  font-weight: bold;
+}
+
+.actions {
+  margin-top: 1rem;
+}
